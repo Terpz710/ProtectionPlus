@@ -1,0 +1,16 @@
+name: ProtectionPlus
+version: 1.0.0
+author: Terpz710
+api: [5.0.0]
+main: Terpz710\ProtectionPlus\Main
+description: Enhance player protection and interaction control with ProtectionPlus.
+permissions:
+  protectionplus.protect:
+    description: Allows players to enable/disable general protection.
+    default: op
+  protectionplus.interaction:
+    description: Allows players to enable/disable general interaction.
+    default: op
+  protectionplus.damage:
+    description: Allows players to enable/disable general pvp.
+    default: op
