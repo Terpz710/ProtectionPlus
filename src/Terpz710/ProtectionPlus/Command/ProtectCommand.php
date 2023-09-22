@@ -39,11 +39,11 @@ class ProtectCommand extends Command implements Listener {
             switch ($action) {
                 case "on":
                     $this->protectionActive[$world] = true;
-                    $sender->sendMessage("§eBlock Protection§r is now §aactive!");
+                    $sender->sendMessage("§eBlock Protection§r is now §aenabled§r!");
                     break;
                 case "off":
                     unset($this->protectionActive[$world]);
-                    $sender->sendMessage("§eBlock Protection§r is now §4inactive!");
+                    $sender->sendMessage("§eBlock Protection§r is now §4disabled§r!");
                     break;
                 default:
                     $sender->sendMessage("Usage: /protection <on|off>");
