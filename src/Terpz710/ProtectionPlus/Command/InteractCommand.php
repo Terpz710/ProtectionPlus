@@ -39,11 +39,11 @@ class InteractCommand extends Command implements Listener {
                 switch ($action) {
                     case "on":
                         $this->interactionEnabled = false;
-                        $sender->sendMessage("§eBlock Interaction§r is now §aactive§r!");
+                        $sender->sendMessage("§eBlock Interaction§r is now §aenabled§r!");
                         break;
                     case "off":
                         $this->interactionEnabled = true;
-                        $sender->sendMessage("§cBlock Interaction§r is now §4inactive§r!");
+                        $sender->sendMessage("§cBlock Interaction§r is now §adisabled§r!");
                         break;
                     default:
                         $sender->sendMessage("Usage: /interaction <on|off>");
