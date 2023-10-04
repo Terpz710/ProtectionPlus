@@ -190,7 +190,7 @@ class ProtectCommand extends Command implements Listener {
      */
     public function onLeavesDecay(LeavesDecayEvent $event): void {
         $block = $event->getBlock();
-        $world = $block->getWorld()->getFolderName();
+        $world = $block->getWorldManager()->getFolderName();
         if (isset($this->protectionActive[$world])) {
             $event->cancel();
         }
