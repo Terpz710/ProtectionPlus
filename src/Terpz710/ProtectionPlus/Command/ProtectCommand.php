@@ -8,15 +8,14 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\entity\EntityTrampleFarmlandEvent;
 use pocketmine\event\player\PlayerBucketEmptyEvent;
 use pocketmine\event\player\PlayerBucketFillEvent;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\Listener;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
-use pocketmine\block\Block;
 
 class ProtectCommand extends Command implements Listener {
 
@@ -85,6 +84,21 @@ class ProtectCommand extends Command implements Listener {
     }
 
     /**
+     * @param EntityTrampleFarmlandEvent $event
+     * @priority HIGHEST
+     */
+    public function onEntityTrampleFarmland(EntityTrampleFarmlandEvent $event): void {
+        $entity = $event->getEntity();
+        if ($entity instanceof Player) {
+            $world = $entity->getWorld()->getFolderName();
+            if (isset($this->protectionActive[$world])) {
+                $entity->sendMessage("Trampling farmland is not allowed here!");
+                $event->cancel();
+            }
+        }
+    }
+
+    /**
      * @param PlayerBucketEmptyEvent $event
      * @priority HIGHEST
      */
@@ -120,28 +134,6 @@ class ProtectCommand extends Command implements Listener {
         if (isset($this->protectionActive[$world])) {
             $player->sendMessage("Dropping §4items§r is §4not allowed§r here!");
             $event->cancel();
-        }
-    }
-
-    /**
-     * @param PlayerMoveEvent $event
-     * @priority HIGHEST
-     */
-    public function onPlayerMove(PlayerMoveEvent $event): void {
-        $player = $event->getPlayer();
-        $to = $event->getTo();
-        $world = $player->getWorld()->getFolderName();
-
-        if (isset($this->protectionActive[$world])) {
-            $x = (int) $to->x;
-            $y = (int) $to->y;
-            $z = (int) $to->z;
-            $block = $player->getWorld()->getBlockAt($x, $y - 1, $z);
-
-            if (in_array($block->getId(), [Block::WHEAT_BLOCK, Block::CARROT_BLOCK, Block::POTATO_BLOCK])) {
-                $player->sendMessage("Jumping on crops is not allowed here!");
-                $event->cancel();
-            }
         }
     }
 
