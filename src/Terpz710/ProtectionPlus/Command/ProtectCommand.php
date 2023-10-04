@@ -181,7 +181,7 @@ class ProtectCommand extends Command implements Listener {
         $world = $player->getWorld()->getFolderName();
         if (isset($this->protectionActive[$world])) {
             $player->sendMessage("Entering a bed is not allowed here!");
-            $event->setCancelled(true);
+            $event->cancel();
         }
     }
 
@@ -193,7 +193,7 @@ class ProtectCommand extends Command implements Listener {
         $block = $event->getBlock();
         $world = $block->getWorld()->getFolderName();
         if (isset($this->protectionActive[$world])) {
-            $event->setCancelled(true);
+            $event->cancel();
         }
     }
 
@@ -205,7 +205,7 @@ class ProtectCommand extends Command implements Listener {
         $block = $event->getBlock();
         $world = $block->getWorld()->getFolderName();
         if (isset($this->protectionActive[$world])) {
-            $event->setCancelled(true);
+            $event->cancel();
         }
     }
 
