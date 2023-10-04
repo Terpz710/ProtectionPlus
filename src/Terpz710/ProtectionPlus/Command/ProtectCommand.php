@@ -11,6 +11,7 @@ use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityExplodeEvent;
 use pocketmine\event\entity\EntityTrampleFarmlandEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
+use pocketmine\event\player\PlayerBedEnterEvent;
 use pocketmine\event\player\PlayerBucketEmptyEvent;
 use pocketmine\event\player\PlayerBucketFillEvent;
 use pocketmine\event\player\PlayerDropItemEvent;
@@ -166,6 +167,19 @@ class ProtectCommand extends Command implements Listener {
                 $entity->sendMessage("Explosions are not allowed here!");
                 $event->cancel();
             }
+        }
+    }
+
+    /**
+     * @param PlayerBedEnterEvent $event
+     * @priority HIGHEST
+     */
+    public function onPlayerBedEnter(PlayerBedEnterEvent $event): void {
+        $player = $event->getPlayer();
+        $world = $player->getWorld()->getFolderName();
+        if (isset($this->protectionActive[$world])) {
+            $player->sendMessage("Entering a bed is not allowed here!");
+            $event->setCancelled(true);
         }
     }
 
