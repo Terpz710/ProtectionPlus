@@ -8,6 +8,8 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\block\LeavesDecayEvent;
+use pocketmine\event\block\PressurePlateUpdateEvent;
 use pocketmine\event\entity\EntityExplodeEvent;
 use pocketmine\event\entity\EntityTrampleFarmlandEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
@@ -179,6 +181,30 @@ class ProtectCommand extends Command implements Listener {
         $world = $player->getWorld()->getFolderName();
         if (isset($this->protectionActive[$world])) {
             $player->sendMessage("Entering a bed is not allowed here!");
+            $event->setCancelled(true);
+        }
+    }
+
+    /**
+     * @param LeavesDecayEvent $event
+     * @priority HIGHEST
+     */
+    public function onLeavesDecay(LeavesDecayEvent $event): void {
+        $block = $event->getBlock();
+        $world = $block->getWorld()->getFolderName();
+        if (isset($this->protectionActive[$world])) {
+            $event->setCancelled(true);
+        }
+    }
+
+    /**
+     * @param PressurePlateUpdateEvent $event
+     * @priority HIGHEST
+     */
+    public function onPressurePlateUpdate(PressurePlateUpdateEvent $event): void {
+        $block = $event->getBlock();
+        $world = $block->getWorld()->getFolderName();
+        if (isset($this->protectionActive[$world])) {
             $event->setCancelled(true);
         }
     }
