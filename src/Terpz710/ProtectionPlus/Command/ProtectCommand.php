@@ -9,6 +9,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityTrampleFarmlandEvent;
+use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\player\PlayerBucketEmptyEvent;
 use pocketmine\event\player\PlayerBucketFillEvent;
 use pocketmine\event\player\PlayerDropItemEvent;
@@ -134,6 +135,21 @@ class ProtectCommand extends Command implements Listener {
         if (isset($this->protectionActive[$world])) {
             $player->sendMessage("Dropping §4items§r is §4not allowed§r here!");
             $event->cancel();
+        }
+    }
+
+    /**
+     * @param EntityShootBowEvent $event
+     * @priority HIGHEST
+     */
+    public function onEntityShootBow(EntityShootBowEvent $event): void {
+        $entity = $event->getEntity();
+        if ($entity instanceof Player) {
+            $world = $entity->getWorld()->getFolderName();
+            if (isset($this->protectionActive[$world])) {
+                $entity->sendMessage("Shooting a bow is not allowed here!");
+                $event->cancel();
+            }
         }
     }
 
